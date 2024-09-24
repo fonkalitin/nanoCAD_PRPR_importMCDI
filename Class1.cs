@@ -5,7 +5,7 @@
     using Rtm = Teigha.Runtime;
     using System.Windows.Forms;
     using prPr_FileBackupper;
-using System.IO;
+    using System.IO;
 
 [assembly: Rtm.CommandClass(typeof(Tools.CadCommand))]
 
@@ -53,7 +53,7 @@ namespace Tools
         public static void backupDwg_mode() // Данный метод только вызывает основную форму
         {
             MainForm mf = new MainForm();
-            mf.Show();
+            mf.ShowDialog();
         }
 
 
