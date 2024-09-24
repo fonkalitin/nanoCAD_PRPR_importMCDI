@@ -4,8 +4,8 @@
     using Ed = HostMgd.EditorInput;
     using Rtm = Teigha.Runtime;
     using System.Windows.Forms;
-
-
+    using prPr_FileBackupper;
+using System.IO;
 
 [assembly: Rtm.CommandClass(typeof(Tools.CadCommand))]
 
@@ -17,8 +17,10 @@ namespace Tools
         class CadCommand : Rtm.IExtensionApplication
         {
 
-            #region INIT
-            public void Initialize()
+        
+
+        #region INIT
+        public void Initialize()    
             {
   
                 App.DocumentCollection dm = App.Application.DocumentManager;
@@ -38,16 +40,29 @@ namespace Tools
                 // Пусто
             }
 
-            #endregion
+        #endregion
 
-            #region Command
+        #region Command
 
-            /// <summary>
-            /// Основная команда для вызова из командной строки
-            /// </summary>
-            [Rtm.CommandMethod("backupdwg")]
-            public void backupDwg_mode_1()
+        /// <summary>
+        /// Основная команда для вызова из командной строки
+        /// </summary>
+        [Rtm.CommandMethod("backupdwg")]
+
+
+        public static void backupDwg_mode() // Данный метод только вызывает основную форму
+        {
+            MainForm mf = new MainForm();
+            mf.Show();
+        }
+
+
+        /// <summary>
+        /// Это основной метод для обработки, он принимает значение номера ревизии (RevisionValue) из формы
+        /// </summary>
+        public static void backupDwg_mode_1(string RevisionValue)
             {
+                      
                 Db.Database db = Db.HostApplicationServices.WorkingDatabase;
                 App.Document doc = App.Application.DocumentManager.MdiActiveDocument;
                 Ed.Editor ed = doc.Editor;
@@ -57,28 +72,27 @@ namespace Tools
             string dwgName = doc.Name; // метод получения полного пути и имени текущего dwg-файла
             string[] dwgSplitName = dwgName.Split(new char[] { '.' }); // Отделение расширения *.dwg от полного имени файла
             string timeNow = DateTime.Now.ToString().Replace(':', '-'); // Замена двоеточий в формате времени на дефисы
-            string dwgNewName = dwgSplitName[0] + "_back_" + timeNow + ".dwg"; // Сборка итоговой полной строки с путем к файлу с новым именем
-
-            DialogResult res = MessageBox.Show("Вы действительно хотите сделать резервную копию текущего dwg-файла? " + Environment.NewLine + dwgNewName, "Подтверждение резервирования", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
-            if (res == DialogResult.OK)
-            {
-
+            string dwgNewName = dwgSplitName[0] + "_back_" + RevisionValue + "_" + timeNow + ".dwg"; // Сборка итоговой полной строки с путем к файлу с новым именем
+            
+            //DialogResult res = MessageBox.Show("Вы действительно хотите сделать резервную копию текущего dwg-файла? " + Environment.NewLine + dwgNewName, "Подтверждение резервирования", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+            //if (res == DialogResult.OK){
                 db.SaveAs(dwgNewName, Db.DwgVersion.Current, false);
-                
-                MessageBox.Show("Резервная копия успешно создана!");
-}
-            if (res == DialogResult.Cancel)
 
+            if (File.Exists(dwgNewName))
             {
+                MessageBox.Show("Резервная копия успешно создана!");
+            }
+            else { 
+                MessageBox.Show("Ошибка создания файла!", "Ошибка!"); 
+            }
                 
 }
-
+            //if (res == DialogResult.Cancel){
+                
+}
 
         }
 
 
             #endregion
-        }
-    }
-
 
