@@ -51,7 +51,7 @@ namespace Tools
         /// <summary>
         /// Основная команда для вызова из командной строки
         /// </summary>
-        [Rtm.CommandMethod("backupdwg")]
+        [Rtm.CommandMethod("disconobj")]
 
 
         public static void backupDwg_mode() // Данный метод только вызывает основную форму
@@ -104,33 +104,32 @@ namespace Tools
             if (curObj is McParametricObject curParObj)
             {
 
-                var ObjChilds = curParObj.ChildrenIDs;
+                string parObjDepts = curParObj.GetDependent().ToString();
+                string parObjDeptFrom = curParObj.GetDependsOn(true, true).ToString();
 
-                MessageBox.Show("Это реально параметрический объект и у него есть следующие дети:" + ObjChilds.ToString());
-
-                DialogResult result = MessageBox.Show("У этого объекта есть следующие дети: " + ObjChilds.ToString() + "Хотите разорвать все связи этого объекта?", "Про связи обьекта", MessageBoxButtons.YesNo);
+                string parObjName = curParObj.Name.ToString();
+                   
+                DialogResult result = MessageBox.Show($"Это реально параметрический объект: {parObjName}. Его зависимые объекты: {parObjDepts}, сам объект зависим от: {parObjDeptFrom}. Хотите разорвать все связи этого объекта?", "Про связи обьекта", MessageBoxButtons.YesNo);
 
                 if (result == DialogResult.Yes)
                 {
                     curParObj.Disconnect();
                 }
-
             }
 
             else {
-
                 MessageBox.Show("Не суй мне фуфло! Это не параметрический обжект вовсе! Я такое не ем!");
-
             }
-
-            
-             
-
-
-
         }
+
+
+
+
+
                 
 }
+
+
 
         }
 
