@@ -105,9 +105,10 @@ namespace Tools
             if (curObj is McParametricObject curParObj)
             {
 
-                 
-
                 string parObjName = curParObj.Name.ToString();
+                McDbEntity entObj = curParObj.DbEntity;
+
+                entObj.Highlight(true);
 
                 DialogResult result = MessageBox.Show($"Это реально параметрический объект: {parObjName} {env.NewLine} Хотите разорвать все связи этого объекта?", "Про связи обьекта", MessageBoxButtons.YesNo);
 
