@@ -19,6 +19,9 @@
       <HintPath>E:\Soft\_NanoDev\NC_SDK_RU_24.0.6377.4326.7134\include-x64\hostmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="imapimgd">
+      <HintPath>E:\Soft\_NanoDev\NC_SDK_RU_24.0.6377.4326.7134\include-x64\imapimgd.dll</HintPath>
+    </Reference>
     <Reference Include="MapiBaseTypes">
       <HintPath>E:\Soft\_NanoDev\NC_SDK_RU_24.0.6377.4326.7134\include-x64\mapibasetypes.dll</HintPath>
       <Private>False</Private>

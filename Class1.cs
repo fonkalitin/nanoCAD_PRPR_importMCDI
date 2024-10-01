@@ -6,6 +6,10 @@
     using System.Windows.Forms;
     using prPr_FileBackupper;
     using System.IO;
+using Multicad;
+using mcDBs = Multicad.DatabaseServices;
+using Multicad.Objects;
+using Multicad.DatabaseServices;
 
 [assembly: Rtm.CommandClass(typeof(Tools.CadCommand))]
 
@@ -52,8 +56,10 @@ namespace Tools
 
         public static void backupDwg_mode() // Данный метод только вызывает основную форму
         {
-            MainForm mf = new MainForm();
-            mf.ShowDialog();
+            //MainForm mf = new MainForm();
+            //mf.ShowDialog();
+            getParamObj();   
+        
         }
 
 
@@ -87,7 +93,42 @@ namespace Tools
             }
                 
 }
-            //if (res == DialogResult.Cancel){
+        //if (res == DialogResult.Cancel){
+
+        public static void getParamObj() {
+
+            McObjectId curObjID = mcDBs.McObjectManager.SelectObject("Выберите объект на чертеже"); // Получить ID обьекта 
+            McObject curObj = curObjID.GetObject(); // Получить обьект
+
+            // Проверить тип и явно преобразовать в Параметрический объект для доступа к методам и свойствам
+            if (curObj is McParametricObject curParObj)
+            {
+
+                var ObjChilds = curParObj.ChildrenIDs;
+
+                MessageBox.Show("Это реально параметрический объект и у него есть следующие дети:" + ObjChilds.ToString());
+
+                DialogResult result = MessageBox.Show("У этого объекта есть следующие дети: " + ObjChilds.ToString() + "Хотите разорвать все связи этого объекта?", "Про связи обьекта", MessageBoxButtons.YesNo);
+
+                if (result == DialogResult.Yes)
+                {
+                    curParObj.Disconnect();
+                }
+
+            }
+
+            else {
+
+                MessageBox.Show("Не суй мне фуфло! Это не параметрический обжект вовсе! Я такое не ем!");
+
+            }
+
+            
+             
+
+
+
+        }
                 
 }
 
