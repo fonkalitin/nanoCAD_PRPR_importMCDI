@@ -94,23 +94,22 @@ namespace Tools
             }
                 
 }
-        //if (res == DialogResult.Cancel){
-
         public static void getParamObj() {
 
             McObjectId curObjID = mcDBs.McObjectManager.SelectObject("Выберите объект на чертеже"); // Получить ID обьекта 
             McObject curObj = curObjID.GetObject(); // Получить обьект
+                    
 
-            // Проверить тип и явно преобразовать в Параметрический объект для доступа к методам и свойствам
+
+            // Проверить тип и если соответствует то явно преобразовать для доступа к его методам и свойствам
             if (curObj is McParametricObject curParObj)
             {
 
-                //string parObjDepts = curParObj.GetDependent().ToString();
-                //string parObjDeptFrom = curParObj.GetDependsOn(true, true).ToString();
+                 
 
                 string parObjName = curParObj.Name.ToString();
-                   
-                DialogResult result = MessageBox.Show($"Это реально параметрический объект: {parObjName} {env.NewLine}  Хотите разорвать все связи этого объекта?", "Про связи обьекта", MessageBoxButtons.YesNo);
+
+                DialogResult result = MessageBox.Show($"Это реально параметрический объект: {parObjName} {env.NewLine} Хотите разорвать все связи этого объекта?", "Про связи обьекта", MessageBoxButtons.YesNo);
 
                 if (result == DialogResult.Yes)
                 {
@@ -125,7 +124,8 @@ namespace Tools
 
 
 
-
+//string parObjDepts = curParObj.GetDependent().ToString();
+                //string parObjDeptFrom = curParObj.GetDependsOn(true, true).ToString();
 
                 
 }
