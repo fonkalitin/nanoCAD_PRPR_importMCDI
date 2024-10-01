@@ -32,7 +32,7 @@ namespace Tools
 
                 Ed.Editor ed = dm.MdiActiveDocument.Editor;
 
-                string sCom = "backupdwg" + "\tСоздание резервных копий dwg";
+                string sCom = "disconobj" + "\tдисконнектор объектов";
                 ed.WriteMessage(sCom);
 
 #if DEBUG
@@ -105,12 +105,12 @@ namespace Tools
             if (curObj is McParametricObject curParObj)
             {
 
-                string parObjDepts = curParObj.GetDependent().ToString();
-                string parObjDeptFrom = curParObj.GetDependsOn(true, true).ToString();
+                //string parObjDepts = curParObj.GetDependent().ToString();
+                //string parObjDeptFrom = curParObj.GetDependsOn(true, true).ToString();
 
                 string parObjName = curParObj.Name.ToString();
                    
-                DialogResult result = MessageBox.Show($"Это реально параметрический объект: {parObjName}. {env.NewLine} Его зависимые объекты: {parObjDepts}, {env.NewLine} сам объект зависим от: {parObjDeptFrom}. {env.NewLine} Хотите разорвать все связи этого объекта?", "Про связи обьекта", MessageBoxButtons.YesNo);
+                DialogResult result = MessageBox.Show($"Это реально параметрический объект: {parObjName} {env.NewLine}  Хотите разорвать все связи этого объекта?", "Про связи обьекта", MessageBoxButtons.YesNo);
 
                 if (result == DialogResult.Yes)
                 {
