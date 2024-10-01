@@ -10,6 +10,7 @@ using Multicad;
 using mcDBs = Multicad.DatabaseServices;
 using Multicad.Objects;
 using Multicad.DatabaseServices;
+using env = System.Environment;
 
 [assembly: Rtm.CommandClass(typeof(Tools.CadCommand))]
 
@@ -109,7 +110,7 @@ namespace Tools
 
                 string parObjName = curParObj.Name.ToString();
                    
-                DialogResult result = MessageBox.Show($"Это реально параметрический объект: {parObjName}. Его зависимые объекты: {parObjDepts}, сам объект зависим от: {parObjDeptFrom}. Хотите разорвать все связи этого объекта?", "Про связи обьекта", MessageBoxButtons.YesNo);
+                DialogResult result = MessageBox.Show($"Это реально параметрический объект: {parObjName}. {env.NewLine} Его зависимые объекты: {parObjDepts}, {env.NewLine} сам объект зависим от: {parObjDeptFrom}. {env.NewLine} Хотите разорвать все связи этого объекта?", "Про связи обьекта", MessageBoxButtons.YesNo);
 
                 if (result == DialogResult.Yes)
                 {
@@ -118,7 +119,7 @@ namespace Tools
             }
 
             else {
-                MessageBox.Show("Не суй мне фуфло! Это не параметрический обжект вовсе! Я такое не ем!");
+                MessageBox.Show($"Не суй мне фуфло! {env.NewLine} Это не параметрический обжект вовсе! {env.NewLine} Я такое не ем!");
             }
         }
 
