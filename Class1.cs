@@ -6,11 +6,13 @@
     using System.Windows.Forms;
     using prPr_FileBackupper;
     using System.IO;
-using Multicad;
-using mcDBs = Multicad.DatabaseServices;
-using Multicad.Objects;
-using Multicad.DatabaseServices;
-using env = System.Environment;
+    using Multicad;
+    using mcDBs = Multicad.DatabaseServices;
+    using Multicad.Objects;
+    using Multicad.DatabaseServices;
+    using env = System.Environment;
+    using DBserv = Multicad.DatabaseServices;
+using Multicad.DataServices;
 
 [assembly: Rtm.CommandClass(typeof(Tools.CadCommand))]
 
@@ -52,14 +54,14 @@ namespace Tools
         /// <summary>
         /// Основная команда для вызова из командной строки
         /// </summary>
-        [Rtm.CommandMethod("disconobj")]
+        [Rtm.CommandMethod("backupdwg")]
 
 
         public static void backupDwg_mode() // Данный метод только вызывает основную форму
         {
-            //MainForm mf = new MainForm();
-            //mf.ShowDialog();
-            getParamObj();   
+            MainForm mf = new MainForm();
+            mf.ShowDialog();
+            
         
         }
 
@@ -73,7 +75,7 @@ namespace Tools
                 Db.Database db = Db.HostApplicationServices.WorkingDatabase;
                 App.Document doc = App.Application.DocumentManager.MdiActiveDocument;
                 Ed.Editor ed = doc.Editor;
-
+                
 
             //string fName = db.Filename; // Альтернативный метод получения полного пути и имени текущего dwg-файла
             string dwgName = doc.Name; // метод получения полного пути и имени текущего dwg-файла
@@ -94,7 +96,9 @@ namespace Tools
             }
                 
 }
-        public static void getParamObj() {
+
+        [Rtm.CommandMethod("disconobj")]
+        public static void disconobj() {
 
             McObjectId curObjID = mcDBs.McObjectManager.SelectObject("Выберите объект на чертеже"); // Получить ID обьекта 
             McObject curObj = curObjID.GetObject(); // Получить обьект
@@ -125,8 +129,18 @@ namespace Tools
 
 
 
-//string parObjDepts = curParObj.GetDependent().ToString();
-                //string parObjDeptFrom = curParObj.GetDependsOn(true, true).ToString();
+        [Rtm.CommandMethod("importMCDI")]
+        public static void importMCDI() {
+
+            Connection spdsDB = new Connection();
+            Folder rootDBfolder = spdsDB.GetRoot();
+
+            //var name = rootDBfolder.Name;
+
+            rootDBfolder.Import("D:\\Soft\\nCAD\\MCDI\\TestObject.mcdi");
+
+        }
+
 
                 
 }

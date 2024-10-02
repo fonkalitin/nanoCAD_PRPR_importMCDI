@@ -12,22 +12,23 @@
 
   <ItemGroup>
     <Reference Include="hostdbmgd">
-      <HintPath>E:\Soft\_NanoDev\NC_SDK_RU_24.0.6377.4326.7134\include-x64\hostdbmgd.dll</HintPath>
+      <HintPath>D:\Soft\nCAD\SDK\NC_SDK_RU_24.1.6578.4521.7731\include-x64\hostdbmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="hostmgd">
-      <HintPath>E:\Soft\_NanoDev\NC_SDK_RU_24.0.6377.4326.7134\include-x64\hostmgd.dll</HintPath>
+      <HintPath>D:\Soft\nCAD\SDK\NC_SDK_RU_24.1.6578.4521.7731\include-x64\hostmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="imapimgd">
-      <HintPath>E:\Soft\_NanoDev\NC_SDK_RU_24.0.6377.4326.7134\include-x64\imapimgd.dll</HintPath>
+      <HintPath>D:\Soft\nCAD\SDK\NC_SDK_RU_24.1.6578.4521.7731\include-x64\imapimgd.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="MapiBaseTypes">
-      <HintPath>E:\Soft\_NanoDev\NC_SDK_RU_24.0.6377.4326.7134\include-x64\mapibasetypes.dll</HintPath>
+      <HintPath>D:\Soft\nCAD\SDK\NC_SDK_RU_24.1.6578.4521.7731\include-x64\mapibasetypes.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="mapimgd">
-      <HintPath>E:\Soft\_NanoDev\NC_SDK_RU_24.0.6377.4326.7134\include-x64\mapimgd.dll</HintPath>
+      <HintPath>D:\Soft\nCAD\SDK\NC_SDK_RU_24.1.6578.4521.7731\include-x64\mapimgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
