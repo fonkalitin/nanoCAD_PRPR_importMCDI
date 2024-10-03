@@ -12,7 +12,8 @@
     using Multicad.DatabaseServices;
     using env = System.Environment;
     using DBserv = Multicad.DatabaseServices;
-using Multicad.DataServices;
+    using Multicad.DataServices;
+    using IniFiles;
 
 [assembly: Rtm.CommandClass(typeof(Tools.CadCommand))]
 
@@ -34,7 +35,7 @@ namespace Tools
 
                 Ed.Editor ed = dm.MdiActiveDocument.Editor;
 
-                string sCom = "disconobj" + "\tдисконнектор объектов";
+                string sCom = $"Доступные команды:{env.NewLine} PRPR_disconobj - дисконнектор объектов; {env.NewLine} PRPR_importMCDI - импорт файла MCDI; {env.NewLine} PRPR_backupdwg - резервная копия DWG-файла;";
                 ed.WriteMessage(sCom);
 
 #if DEBUG
@@ -54,7 +55,7 @@ namespace Tools
         /// <summary>
         /// Основная команда для вызова из командной строки
         /// </summary>
-        [Rtm.CommandMethod("backupdwg")]
+        [Rtm.CommandMethod("PRPR_backupdwg")]
 
 
         public static void backupDwg_mode() // Данный метод только вызывает основную форму
@@ -97,7 +98,7 @@ namespace Tools
                 
 }
 
-        [Rtm.CommandMethod("disconobj")]
+        [Rtm.CommandMethod("PRPR_disconobj")]
         public static void disconobj() {
 
             McObjectId curObjID = mcDBs.McObjectManager.SelectObject("Выберите объект на чертеже"); // Получить ID обьекта 
@@ -129,15 +130,41 @@ namespace Tools
 
 
 
-        [Rtm.CommandMethod("importMCDI")]
+        [Rtm.CommandMethod("PRPR_importMCDI")]
         public static void importMCDI() {
 
-            Connection spdsDB = new Connection();
-            Folder rootDBfolder = spdsDB.GetRoot();
+            // Чтение файла конфигурации
+            IniFile INI = new IniFile("D:\\Soft\\nCAD\\MCDI\\prPr_DBConfig.ini");
 
-            //var name = rootDBfolder.Name;
+            string MCDIfolderPath = INI.ReadINI("MCDI", "MCDIfolderPath");
+            string MCDIfilename = INI.ReadINI("MCDI", "MCDIfilename");
 
-            rootDBfolder.Import("D:\\Soft\\nCAD\\MCDI\\TestObject.mcdi");
+            string DBfolderName = INI.ReadINI("spdsDB", "DBfolderName");
+            string DBname = INI.ReadINI("spdsDB", "DBname");
+
+            // Подключениек текущей БД
+            Connection spdsDB = new Connection(); 
+
+            // Сборка полного пути к MCDI файлу для импорта
+            string MCDIfileFOrImport = MCDIfolderPath + MCDIfilename;
+
+            // Проверка места в структуре БД для импорта
+            if (DBfolderName == "DBroot") // Импорт в корень БД
+            {
+                // Переход в корень дерева БД
+                Folder rootDBfolder = spdsDB.GetRoot();
+                rootDBfolder.Import(MCDIfileFOrImport); // Непосредственно операция импорта MCDI в БД
+            }
+
+            else {
+                // Переход в заданный "DBfolderName" подкаталог дерева БД
+                Folder DBfolder = spdsDB.GetRoot("PRPR_DBfolderName", true); // true - создать подкаталог если его не существует в дереве БД
+                DBfolder.GetSubFolder(MCDIfileFOrImport);
+            }
+            
+
+            
+
 
         }
 
