@@ -14,6 +14,8 @@
     using DBserv = Multicad.DatabaseServices;
     using Multicad.DataServices;
     using IniFiles;
+    using System.Reflection;
+    
 
 [assembly: Rtm.CommandClass(typeof(Tools.CadCommand))]
 
@@ -25,7 +27,8 @@ namespace Tools
         class CadCommand : Rtm.IExtensionApplication
         {
 
-        
+        // Константа с именем кофигурационного файла с настройками
+        public const string configFile = "prPr_DBConfig.ini";
 
         #region INIT
         public void Initialize()    
@@ -128,19 +131,25 @@ namespace Tools
             }
         }
 
-
-
         [Rtm.CommandMethod("PRPR_importMCDI")]
         public static void importMCDI() {
 
+            // Получение фактического пути расположения данной сборки dll
+            string dllFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            // Сборка полного пуи к файлу конфигурации
+            string iniFileFullPath = $"{dllFolder}\\{configFile}";
+           
             // Чтение файла конфигурации
-            IniFile INI = new IniFile("D:\\Soft\\nCAD\\MCDI\\prPr_DBConfig.ini");
+            IniFile INI = new IniFile(iniFileFullPath);
 
             string MCDIfolderPath = INI.ReadINI("MCDI", "MCDIfolderPath");
             string MCDIfilename = INI.ReadINI("MCDI", "MCDIfilename");
 
             string DBfolderName = INI.ReadINI("spdsDB", "DBfolderName");
+            bool importToRoot = bool.Parse(INI.ReadINI("spdsDB", "importToRoot"));
             string DBname = INI.ReadINI("spdsDB", "DBname");
+
 
             // Подключениек текущей БД
             Connection spdsDB = new Connection(); 
@@ -148,20 +157,32 @@ namespace Tools
             // Сборка полного пути к MCDI файлу для импорта
             string MCDIfileFOrImport = MCDIfolderPath + MCDIfilename;
 
-            // Проверка места в структуре БД для импорта
-            if (DBfolderName == "DBroot") // Импорт в корень БД
+            DateTime MCDIfileDate = File.GetLastWriteTime(MCDIfileFOrImport);
+
+            DialogResult result = MessageBox.Show($"Хотите импортировать в текущую базу данных файл? {env.NewLine}{MCDIfilename} {env.NewLine}обновлен: {MCDIfileDate.ToString()}", "Импорт в локальную БД", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes) {
+
+                // Выбор места в структуре БД для импорта (корень или подкаталог)
+                if (importToRoot) // Импорт в корень БД (если включена настройка в конфиге)
             {
                 // Переход в корень дерева БД
                 Folder rootDBfolder = spdsDB.GetRoot();
                 rootDBfolder.Import(MCDIfileFOrImport); // Непосредственно операция импорта MCDI в БД
-            }
+                
+                    MessageBox.Show($"Импорт {MCDIfilename} успешно выполнен в корневой каталог БД", "Импорт корень в локальной БД", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
 
             else {
                 // Переход в заданный "DBfolderName" подкаталог дерева БД
-                Folder DBfolder = spdsDB.GetRoot("PRPR_DBfolderName", true); // true - создать подкаталог если его не существует в дереве БД
-                DBfolder.GetSubFolder(MCDIfileFOrImport);
+                Folder DBsubFolder = spdsDB.GetRoot().GetSubFolder(DBfolderName); // Получение целевого подкаталога в дереве БД
+                DBsubFolder.Import(MCDIfileFOrImport); // Непосредственно операция импорта MCDI в подкаталог БД
+                
+                    MessageBox.Show($"Импорт {MCDIfilename} успешно выполнен в следующий каталог БД: {env.NewLine}{DBsubFolder.ToString()}", "Импорт в локальную БД", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            
+
+
+             }
 
             
 
@@ -172,10 +193,7 @@ namespace Tools
                 
 }
 
-
-
         }
 
 
             #endregion
-
