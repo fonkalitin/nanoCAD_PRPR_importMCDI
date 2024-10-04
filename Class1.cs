@@ -1,5 +1,5 @@
 ﻿
-    using App = HostMgd.ApplicationServices;
+    using App = HostMgd.ApplicationServices; 
     using Db = Teigha.DatabaseServices;
     using Ed = HostMgd.EditorInput;
     using Rtm = Teigha.Runtime;
@@ -10,12 +10,15 @@
     using mcDBs = Multicad.DatabaseServices;
     using Multicad.Objects;
     using Multicad.DatabaseServices;
+    using Multicad.AplicationServices;
     using env = System.Environment;
     using DBserv = Multicad.DatabaseServices;
     using Multicad.DataServices;
     using IniFiles;
     using System.Reflection;
-    
+using System.Security.Cryptography.X509Certificates;
+using Multicad.Runtime;
+
 
 [assembly: Rtm.CommandClass(typeof(Tools.CadCommand))]
 
@@ -157,7 +160,17 @@ namespace Tools
             // Сборка полного пути к MCDI файлу для импорта
             string MCDIfileFOrImport = MCDIfolderPath + MCDIfilename;
 
+            // Получение времени изменения файла MCDI
             DateTime MCDIfileDate = File.GetLastWriteTime(MCDIfileFOrImport);
+
+            string curBD = McParamManager.GetStringParam(9); //получаем путь к  текущей базе СПДС (9 - это порядковый номер параметра в конфиг файле настроек СПДС .xml)
+
+            bool isLocalhostDB = curBD.Contains(":localhost");
+            bool isLocalDB = curBD.Contains("");
+            int countOf = curBD.Split(":").Length - 1;
+
+            // Определить какие права у текущего пользователя БД
+            string curUserRole = spdsDB.GetUserRole().ToString();
 
             DialogResult result = MessageBox.Show($"Хотите импортировать в текущую базу данных файл? {env.NewLine}{MCDIfilename} {env.NewLine}обновлен: {MCDIfileDate.ToString()}", "Импорт в локальную БД", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -178,13 +191,13 @@ namespace Tools
                 Folder DBsubFolder = spdsDB.GetRoot().GetSubFolder(DBfolderName); // Получение целевого подкаталога в дереве БД
                 DBsubFolder.Import(MCDIfileFOrImport); // Непосредственно операция импорта MCDI в подкаталог БД
                 
-                    MessageBox.Show($"Импорт {MCDIfilename} успешно выполнен в следующий каталог БД: {env.NewLine}{DBsubFolder.ToString()}", "Импорт в локальную БД", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"Импорт {MCDIfilename} успешно выполнен в следующий каталог БД: {DBsubFolder.ToString()}", "Импорт в локальную БД", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
+                
 
              }
 
-            
+            // McParamManager.SetParam("полный путь БД", 9); // Установить подключение к заданной БД
 
 
         }
