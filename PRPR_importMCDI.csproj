@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
@@ -12,23 +12,23 @@
 
   <ItemGroup>
     <Reference Include="hostdbmgd">
-      <HintPath>D:\Soft\nCAD\SDK\NC_SDK_RU_24.1.6578.4521.7731\include-x64\hostdbmgd.dll</HintPath>
+      <HintPath>nCAD 24.1 API\hostdbmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="hostmgd">
-      <HintPath>D:\Soft\nCAD\SDK\NC_SDK_RU_24.1.6578.4521.7731\include-x64\hostmgd.dll</HintPath>
+      <HintPath>nCAD 24.1 API\hostmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="imapimgd">
-      <HintPath>D:\Soft\nCAD\SDK\NC_SDK_RU_24.1.6578.4521.7731\include-x64\imapimgd.dll</HintPath>
+      <HintPath>nCAD 24.1 API\imapimgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="MapiBaseTypes">
-      <HintPath>D:\Soft\nCAD\SDK\NC_SDK_RU_24.1.6578.4521.7731\include-x64\mapibasetypes.dll</HintPath>
+      <HintPath>nCAD 24.1 API\mapibasetypes.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="mapimgd">
-      <HintPath>D:\Soft\nCAD\SDK\NC_SDK_RU_24.1.6578.4521.7731\include-x64\mapimgd.dll</HintPath>
+      <HintPath>nCAD 24.1 API\mapimgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -46,6 +46,24 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="nCAD 24.1 API\hostdbmgd.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="nCAD 24.1 API\hostmgd.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="nCAD 24.1 API\imapimgd.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="nCAD 24.1 API\mapibasetypes.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="nCAD 24.1 API\mapimgd.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 	
