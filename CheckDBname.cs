@@ -1,30 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Teigha.DatabaseServices;
+﻿
 
-namespace prPr_FileBackupper
+public class checkDBname
 {
-    internal class isLocalDB
-    {
-        public isLocalDB(string DBname) {
-            bool result = false;
-            bool isLocalhostDB = DBname.Contains(":localhost");
-            bool isPGsqlDB = DBname.Contains("pgsql:");
-            //int countOf = DBname.Split(":").Length - 1;
+    public bool isLocalDB(string DBname)
+    { // Метод для проверки имени БД - локальная или сетевая
+        bool result = false;
+        bool isLocalhostDB = DBname.Contains(":localhost");
+        bool isPGsqlDB = DBname.Contains("pgsql:");
 
-            if ((DBname.Split(":").Length - 1) > 1 && DBname.Contains(":localhost") == false)
-            {
-                result = true; // Это сетевая БД если есть два двоеточия : и нет localhost
-            }
-
-            else { 
-            
-            }
-
-            //return result;
+        if ((DBname.Split(":").Length - 1) > 1 && DBname.Contains(":localhost") == false)
+        {
+            result = false; // Это сетевая БД если есть два двоеточия : и нет localhost
         }
+
+        else if ((DBname.Split(":").Length - 1) < 1 || DBname.Contains(":localhost") || DBname.Contains("\\"))
+        {
+            result = true; // Имя БД локальное, т.к. в  имени меньше двух : или есть слово Локалхост, или есть слэш пути
+        }
+
+        else
+        {
+            result = false; // Если ни одно из прыдыдущих не подошло то на всякий случай скажем что сетевая БД
+        }
+
+        return result;
     }
+
 }
