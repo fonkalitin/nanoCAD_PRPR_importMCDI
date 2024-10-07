@@ -8,6 +8,7 @@
     <Platforms>AnyCPU;x64</Platforms>
     <OutputType>Library</OutputType>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+    <BaseOutputPath>bin\</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
