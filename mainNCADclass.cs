@@ -46,7 +46,7 @@ namespace Tools
 
                 if (showInfoOnStart) // Если в конфиге включена опция [showInfoOnStart] то при запуске всегда будет показываться информационное сообщение из конфига
                 {
-                MessageBox.Show(infoOnStart, "Информация ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(infoOnStart, "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 };
 
                 string guestString = $"{env.NewLine}Доступные команды: PRPR_importMCDI - автоимпорт файла MCDI";
