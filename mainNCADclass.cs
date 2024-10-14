@@ -41,6 +41,13 @@ namespace Tools
                 // Чтение файла конфигурации
                 IniFile INI = new IniFile(iniFileFullPath);
                 bool autoUpdNeeded = bool.Parse(INI.ReadINI("options", "autoUpdNeeded"));
+                bool showInfoOnStart = bool.Parse(INI.ReadINI("options", "showInfoOnStart"));
+                string infoOnStart = INI.ReadINI("options", "infoOnStart");
+
+                if (showInfoOnStart) // Если в конфиге включена опция [showInfoOnStart] то при запуске всегда будет показываться информационное сообщение из конфига
+                {
+                MessageBox.Show(infoOnStart, "Информация ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                };
 
                 string guestString = $"{env.NewLine}Доступные команды: PRPR_importMCDI - автоимпорт файла MCDI";
                 ed.WriteMessage(guestString);
@@ -124,7 +131,7 @@ namespace Tools
                 if (importToRoot) // Импорт в корень БД (если включена настройка в конфиге)
                 {
                     rootDBfolder.Import(MCDIfileFOrImport); // Непосредственно операция импорта MCDI в БД
-                    MessageBox.Show($"Импорт {MCDIfilename} успешно выполнен в корневой каталог БД", "Импорт корень в локальной БД", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"Импорт {MCDIfilename} успешно выполнен в корневой каталог локальной БД", "Импорт в корень локальной БД", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else // Ветка есои импортировать не в корень БД а в подкаталог
                 {
@@ -167,9 +174,14 @@ namespace Tools
                         App.Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage($"Импорт {MCDIfilename} успешно выполнен в следующий каталог БД: {DBsubFolder.ToString()}");
                     }
 
+                    else if (importIsOk == false)
+                    {
+                        MessageBox.Show("Импорт не удалось выполнить!", "Ошибка импорта", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
                     else
                     {
-                        MessageBox.Show("Импорт не удалось выполнить!", "Ошибка импорта", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                        MessageBox.Show("Возникла неопределенная ошибка", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); 
                     }
                 }
             } ///  -----  Функция импорта MCDI в БД -----
